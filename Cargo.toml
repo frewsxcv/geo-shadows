@@ -1,0 +1,8 @@
+[package]
+name = "geo-shadows"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sun = "0.2"
+geo = "0.23"
