@@ -23,10 +23,9 @@ trait Shadow {
 
 impl Shadow for geo::Rect {
     fn shadow(&self, height: f64, unixtime_ms: i64) -> geo::Polygon {
-        let sun_position = self.min().sun_position(unixtime_ms);
-        let shadow_length = shadow_length(&sun_position, height);
-
         let shadow_extent = self.map_coords(|coord| {
+            let sun_position = coord.sun_position(unixtime_ms);
+            let shadow_length = shadow_length(&sun_position, height);
             geo::Point(coord)
                 .haversine_destination(sun_position.azimuth, shadow_length)
                 .0
