@@ -23,6 +23,12 @@ trait Shadow {
 
 impl Shadow for geo::Rect {
     fn shadow(&self, height: f64, unixtime_ms: i64) -> geo::Polygon {
+        self.to_polygon().shadow(height, unixtime_ms)
+    }
+}
+
+impl Shadow for geo::Polygon {
+    fn shadow(&self, height: f64, unixtime_ms: i64) -> geo::Polygon {
         let shadow_extent = self.map_coords(|coord| {
             let sun_position = coord.sun_position(unixtime_ms);
             let shadow_length = shadow_length(&sun_position, height);
@@ -32,8 +38,8 @@ impl Shadow for geo::Rect {
         });
 
         geo::MultiPolygon::new(vec![
-            self.to_polygon(),
-            shadow_extent.to_polygon()
+            self.clone(), // TODO: Remove this clone
+            shadow_extent
         ]).convex_hull()
     }
 }
