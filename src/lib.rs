@@ -21,6 +21,12 @@ trait Shadow {
     fn shadow(&self, height: f64, unixtime_ms: i64) -> geo::Polygon;
 }
 
+impl Shadow for geo::Triangle {
+    fn shadow(&self, height: f64, unixtime_ms: i64) -> geo::Polygon {
+        self.to_polygon().shadow(height, unixtime_ms)
+    }
+}
+
 impl Shadow for geo::Rect {
     fn shadow(&self, height: f64, unixtime_ms: i64) -> geo::Polygon {
         self.to_polygon().shadow(height, unixtime_ms)
